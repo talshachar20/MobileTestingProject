@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,12 +26,13 @@ public class MobileTest {
 	public void testReady() throws Exception{
     	SelendroidCapabilities capa = new SelendroidCapabilities("io.selendroid.testapp:0.17.0");
     	driver = new SelendroidDriver(capa);
+    	driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     	//Thread.sleep(12000);   	    		
 	}
 	
 	@Test 
 	public void testRun() throws Exception {
-		System.out.println("getting element:");
+		System.out.println("asserting field text");
 		WebElement testField = driver.findElement(By.xpath("//EditText[@id='my_text_field']"));
 		testField.sendKeys(testData.get("fielddata"));
 		assertEquals(testData.get("fielddata"), testField.getText().toLowerCase());	
@@ -42,6 +44,17 @@ public class MobileTest {
 		WebElement testField = driver.findElement(By.xpath("//EditText[@id='my_text_field']"));
 		testField.sendKeys(testData.get("fielddata"));
 		assertFalse(testField.getText().toLowerCase().equals("bobo"));
+	}
+	
+	@Test 
+	public void testRun3() throws Exception {
+		System.out.println("getting element:");
+		WebElement element1 = driver.findElement(By.xpath("//ImageButton[@id='buttonStartWebview']"));
+		element1.click();
+		//Thread.sleep(19000);   
+		WebElement element2 = driver.findElement(By.xpath("//Button[@id='goBack']"));
+		element2.click();
+
 	}
 	
 	@After 

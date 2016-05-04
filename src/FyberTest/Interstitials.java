@@ -1,3 +1,5 @@
+package FyberTest;
+
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.junit.Test;
 import io.selendroid.client.SelendroidDriver;
 import io.selendroid.common.SelendroidCapabilities;
+import page_obects.ApplicationInterstitialsTab;
+
 import org.openqa.selenium.interactions.touch.TouchActions;
 	
 public class Interstitials {
@@ -30,9 +34,7 @@ public class Interstitials {
 			elements.put("token_field", driver.findElement(By.xpath("//EditText[@id='security_token_field']")));
 			elements.put("staging_server_checkbox", driver.findElement(By.xpath("//CheckBox[@id='use_staging_urls_checkbox']")));
 			elements.put("start_sdk_button", driver.findElement(By.xpath("//Button[@id='start_sdk']")));
-			elements.put("interstitials_tab", driver.findElement(By.xpath("//Button[@value='Interstitial']")));
-			elements.put("request_ads", driver.findElement(By.xpath("//Button[@id='interstitial_request_ads']")));
-			elements.put("show_ad", driver.findElement(By.xpath("//Button[@id='interstitial_play_ads']")));			
+			elements.put("interstitials_tab", driver.findElement(By.xpath("//Button[@value='Interstitial']")));		
 		}
 		
 		@Before
@@ -46,7 +48,8 @@ public class Interstitials {
 		@Test 
 		public void testRun() throws Exception {
 			System.out.println("addin app details");
-			elements.get("appid_field").sendKeys(testData.get("application_id"));
+			ApplicationHomePage ahp = new ApplicationHomePage(driver);
+			ahp.get_app_id().sendKeys(testData.get("application_id"));
 			elements.get("token_field").sendKeys(testData.get("token"));
 			elements.get("staging_server_checkbox").click();
 			elements.get("start_sdk_button").click();
@@ -54,9 +57,10 @@ public class Interstitials {
 			TouchActions action = new TouchActions(driver).scroll(0,800);
 			action.perform();
 			elements.get("interstitials_tab").click();
-			clickTwice(elements.get("request_ads"));
-			Thread.sleep(10000);
-			assertEquals(true, elements.get("show_ad").isEnabled());	
+			ApplicationInterstitialsTab ait = new ApplicationInterstitialsTab(driver);
+			clickTwice(ait.request_ads_interstitials());
+//			Thread.sleep(10000);
+//			assertEquals(true, ApplicationInterstitialsTab.show_ad().isEnabled());	
 		}
 		
 		@After 
